@@ -1,0 +1,27 @@
+{%- extends 'layout.html' -%}
+{%- import 'macros/box.html' as box -%}
+
+{%- block head_title -%}
+    {{- tags[0].title }} | {{ site.title -}}
+{%- endblock -%}
+
+{%- block head -%}
+<link rel="stylesheet" href="{{ 'static/tweet.css' | to_static | safe }}">{{- '' -}}
+{%- endblock -%}
+
+{%- block main_body -%}
+{%- if tags[0].title == 'tweet' -%}
+    <ul class="archives-list">{{- '' -}}
+        {{- box::tweets(archives=tags[0].archives) -}}
+    </ul>{{- '' -}}
+{%- else -%}
+    <div class="box">{{- '' -}}
+        {{- box::archives_head() -}}
+        <div class="box-body">{{- '' -}}
+            <ul class="archives-list">{{- '' -}}
+                {{- box::archives(archives=tags[0].archives) -}}
+            </ul>{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+{%- endif -%}
+{%- endblock -%}

@@ -1,0 +1,322 @@
+{%- macro back_to(url='/') -%}
+<li class="archives-item">{{- '' -}}
+    <div class="archives-item-info">{{- '' -}}
+        <div class="archives-info-icon">{{- '' -}}
+            <span class="archives-coticon-blue"><span class="octicon-file_directory"></span></span>{{- '' -}}
+        </div>{{- '' -}}
+        <div class="archives-info-title">{{- '' -}}
+            {%- if url == '/' -%}
+                <a href="/" title="回首页">/&nbsp;</a>{{- '' -}}
+            {%- else -%}
+                <a href="{{ url | safe }}" title="回到 {{ url }}">..</a>{{- '' -}}
+            {%- endif -%}
+        </div>{{- '' -}}
+        <div class="archives-info-desc"></div>{{- '' -}}
+    </div>{{- '' -}}
+    <div class="archives-item-date"></div>{{- '' -}}
+</li>{{- '' -}}
+{%- endmacro -%}
+
+{%- macro archives(archives, max=0, with_back=true, skip_tags=false) -%}
+    {%- if with_back -%}
+        {{- box::back_to() -}}
+    {%- endif -%}
+    {%- for archive in archives -%}
+        {%- if max > 0 and loop.index > max -%}
+            {%- break -%}
+        {%- endif -%}
+        {%- set_global skip = false -%}
+        {%- if skip_tags -%}
+            {%- for skip_tag in skip_tags -%}
+                {%- for tag in archive.tags -%}
+                    {%- if skip_tag == tag.title -%}
+                        {%- set_global skip = true -%}
+                        {%- break -%}
+                    {%- endif -%}
+                {%- endfor -%}
+                {%- if skip -%}
+                    {%- break -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endif -%}
+        {%- if skip -%}
+            {%- continue -%}
+        {%- endif -%}
+        <li class="archives-item">{{- '' -}}
+            <div class="archives-item-info">{{- '' -}}
+                <div class="archives-info-icon">{{- '' -}}
+                    <span class="octicon-file"></span>{{- '' -}}
+                </div>{{- '' -}}
+                <div class="archives-info-title">{{- '' -}}
+                    {%- if archive.sticky > 0 -%}
+                        <span class="archives-coticon-blue"><span class="octicon-pin"></span></span>{{- ' ' -}}
+                    {%- endif -%}
+                    <a href="{{ archive.url | safe }}" title="{{ archive.title }}">{{ archive.title }}</a>{{- '' -}}
+                </div>{{- '' -}}
+                <div class="archives-info-desc">{{- '' -}}
+                    <span>{{- archive.summary | truncate(length=20, end='') -}}</span>{{- ' ' -}}
+                {%- for category in archive.categories -%}
+                    <a href="{{ category.url | safe }}">{{ category.title }}</a>{{- ' ' -}}
+                {%- endfor -%}
+                {%- for tag in archive.tags -%}
+                    <a href="{{ tag.url | safe }}">{{ tag.title }}</a>{{- ' ' -}}
+                {%- endfor -%}
+                {%- if archive.url is starting_with("/archives/") and archive.short -%}
+                    <a href="{{ archive.url | safe }}"><strong>#{{ archive.short }}</strong></a>{{- '' -}}
+                {%- endif -%}
+                </div>{{- '' -}}
+            </div>{{- '' -}}
+            <div class="archives-item-date">{{- '' -}}
+                {{- archive.created | date(format="%Y-%m-%d") -}}
+            </div>{{- '' -}}
+        </li>{{- '' -}}
+    {%- endfor -%}
+{%- endmacro -%}
+
+{%- macro terms(terms, max=0) -%}
+    {{- box::back_to() -}}
+    {%- for term in terms -%}
+        {%- if max > 0 and loop.index > max -%}
+            {%- break -%}
+        {%- endif -%}
+        <li class="archives-item">{{- '' -}}
+            <div class="archives-item-info">{{- '' -}}
+                <div class="archives-info-icon">{{- '' -}}
+                    <span class="archives-coticon-blue"><span class="octicon-file_directory"></span></span>{{- '' -}}
+                </div>{{- '' -}}
+                <div class="archives-info-title">{{- '' -}}
+                    <a href="{{ term.url | safe }}" title="{{ term.title }}">{{ term.title }}</a>{{- '' -}}
+                </div>{{- '' -}}
+                <div class="archives-info-desc">{{- '' -}}
+                    {{- term.archives | length }} items
+                </div>{{- '' -}}
+            </div>{{- '' -}}
+            <div class="archives-item-date">{{- '' -}}
+                {%- set first_archive =  term.archives | first -%}
+                {{- first_archive.created | date(format="%Y-%m-%d") -}}
+            </div>{{- '' -}}
+        </li>{{- '' -}}
+    {%- endfor -%}
+{%- endmacro -%}
+
+{%- macro archives_head() -%}
+<div class="box-head box-head-blue">{{- '' -}}
+    <div class="box-head-info">{{- '' -}}
+        <span class="box-head-avatar shake-rotate">{{- '' -}}
+            {{- theme_ctx.avatar | safe -}}
+        </span>{{- '' -}}
+        <span>{{- ' ' -}}
+            <strong>{{ site.author }}</strong> committed{{- ' ' -}}
+            <span style="font-size: 12px;"><strong>{{ site.tagline }}</strong></span>{{- ' ' -}}
+            on {{ now() | date(format="%e %b") }}{{- ' ' -}}
+            <span class="box-head-ellipsis">...</span>{{- '' -}}
+        </span>{{- '' -}}
+    </div>{{- '' -}}
+    <div class="box-head-actions">{{- '' -}}
+        <div>{{- '' -}}
+            <span class="octicon-history"></span>{{- ' ' -}}
+            <strong>{{- '' -}}
+                {%- if categories | length == 1 -%}
+                    {{- categories[0].archives | length -}}
+                {%- elif tags | length == 1 -%}
+                    {{- tags[0].archives | length -}}
+                {%- else -%}
+                    {{- archives | length -}}
+                {%- endif -%}
+            </strong>{{- ' ' -}}
+            commits{{- '' -}}
+        </div>{{- '' -}}
+        <div>{{- '' -}}
+            <span class="octicon-git_branch"></span>{{- '' -}}
+            <strong> {{ categories | length }} </strong>{{- '' -}}
+            branches{{- '' -}}
+        </div>{{- '' -}}
+        <div>{{- '' -}}
+            <span class="octicon-tag"></span>{{- '' -}}
+            <strong> {{ tags | length }} </strong>{{- '' -}}
+            tags{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+</div>{{- '' -}}
+{%- endmacro -%}
+
+{%- macro archive_head(archive) -%}
+<div class="box-head box-head-archive">{{- '' -}}
+    <div>{{- '' -}}
+        {%- set lines = archive.content | split(pat="\n") | length -%}
+        {{- lines - 1 }} lines{{- ' ' -}}
+        <span class="file-info-divider"></span>{{- ' ' -}}
+        {%- set words = archive.content | length -%}
+        {{- words * 2 | filesizeformat -}}
+    </div>{{- '' -}}
+    <div>{{- '' -}}
+        First commit on{{- ' ' -}}
+        <span title="{{ archive.created | date(format='%Y-%m-%d') }}">{{- '' -}}
+            {{- archive.created | date(format="%e %b %Y") | trim -}}
+        </span>{{- '' -}}
+    </div>{{- '' -}}
+</div>{{- '' -}}
+{%- endmacro -%}
+
+{%- macro tweets(archives, max=0) -%}
+{%- for archive in archives -%}
+    {%- if max > 0 and loop.index > max -%}
+        {%- break -%}
+    {%- endif -%}
+    <li class="timeline-item">{{- '' -}}
+        <div class="timeline-item-avatar{% if loop.index == 1 %}{{ ' timeline-item-first' }}{% endif %} shake-hard">{{- '' -}}
+            {{- theme_ctx.avatar | safe -}}
+        </div>{{- '' -}}
+        <div class="timeline-item-archive{% if loop.index == 1 %}{{ ' timeline-item-first' }}{% endif %}{% if loop.last -%}
+                {{- ' timeline-item-last' }}{% endif %}">{{- '' -}}
+            <div class="timeline-item-caret">{{- '' -}}
+                <div class="box">{{- '' -}}
+                    <div class="box-head">{{- '' -}}
+                        <div class="box-head-info">{{- '' -}}
+                            <span class="box-head-avatar shake-rotate">{{- '' -}}
+                                {{- theme_ctx.avatar | safe -}}
+                            </span>{{- '' -}}
+                            {%- if archive.title -%}
+                                <a class="timeline-item-title" href="{{ archive.url | safe }}" title="{{ archive.title }}">{{- '' -}}
+                                    {{- archive.title -}}
+                                </a>{{- '' -}}
+                            {%- endif -%}
+                            <span>{{- '' -}}
+                                {{- archive.created | date(format="%Y-%m-%d") -}}
+                            </span>{{- '' -}}
+                        </div>{{- '' -}}
+                        <div>{{- '' -}}
+                            <a href="{{ archive.url | safe }}" title="{{ archive.title }}">{{- '' -}}
+                                #{{ archive.short -}}
+                            </a>{{- '' -}}
+                        </div>{{- '' -}}
+                    </div>{{- '' -}}
+                    <div class="box-body">{{- '' -}}
+                        <div class="archive-content markdown-body">{{- '' -}}
+                            {{- archive.summary | safe -}}{{- '' -}}
+                        </div>{{- '' -}}
+                    </div>{{- '' -}}
+                </div>{{- '' -}}
+            </div>{{- '' -}}
+        </div>{{- '' -}}
+    </li>{{- '' -}}
+    {%- if archive.sticky > 0 -%}
+        <li class="timeline-item">{{- '' -}}
+            <div class="timeline-item-avatar" style="width: 40px;"></div>{{- '' -}}
+            <div class="timeline-item-archive">{{- '' -}}
+                <div class="timeline-item-event">{{- '' -}}
+                    <div class="timeline-item-badge"><span class="octicon-pin"></span></div>{{- '' -}}
+                    <div>{{- '' -}}
+                        <span class="box-head-avatar shake-rotate">{{- '' -}}
+                            {{- theme_ctx.avatar | safe -}}
+                        </span>{{- '' -}}
+                        {{- site.author }} pinned this tweet.{{- '' -}}
+                    </div>{{- '' -}}
+                </div>{{- '' -}}
+            </div>{{- '' -}}
+        </li>{{- '' -}}
+    {%- endif -%}
+{%- endfor -%}
+{%- endmacro -%}
+
+{%- macro activities(activities, max=0, skip_tags=false) -%}
+    {%- set_global count = 0 -%}
+    {%- set_global is_breaked = false -%}
+    {%- for acti in activities -%}
+        {%- if is_breaked -%}
+            {%- break -%}
+        {%- endif -%}
+        {%- for key, archives in acti -%}
+            {%- if key == 'Pinned' -%}
+                {%- continue -%}
+            {%- endif -%}
+            <div class="contrib-month">{{- '' -}}
+                <div class="contrib-month-topline">{{- '' -}}
+                    <div class="contrib-month-title">{{- key -}}</div>{{- '' -}}
+                </div>{{- '' -}}
+                <ul class="contrib-list">{{- '' -}}
+                    {%- for archive in archives -%}
+                        {%- set_global count = count + 1 -%}
+                        {%- if max > 0 and count > max -%}
+                            {%- set_global is_breaked = true -%}
+                            {%- break -%}
+                        {%- endif -%}
+                        {%- set_global skip = false -%}
+                        {%- if skip_tags -%}
+                            {%- for skip_tag in skip_tags -%}
+                                {%- for tag in archive.tags -%}
+                                    {%- if skip_tag == tag.title -%}
+                                        {%- set_global skip = true -%}
+                                        {%- break -%}
+                                    {%- endif -%}
+                                {%- endfor -%}
+                                {%- if skip -%}
+                                    {%- break -%}
+                                {%- endif -%}
+                            {%- endfor -%}
+                        {%- endif -%}
+                        {%- if skip -%}
+                            {%- continue -%}
+                        {%- endif -%}
+                        <li class="contrib-item">
+                            {%- if archive.is_tweet -%}
+                                {%- if archive.show_badge -%}
+                                    <div class="contrib-tweet-badge">{{- '' -}}
+                                        <span class="octicon-pulse"></span>{{- '' -}}
+                                    </div>{{- '' -}}
+                                {%- else -%}
+                                    <div class="contrib-tweet-badge-placeholder"></div>{{- '' -}}
+                                {%- endif -%}
+                                <div class="contrib-tweet">{{- '' -}}
+                                    <div class="contrib-tweet-box">{{- '' -}}
+                                        <div class="contrib-tweet-content">{{- '' -}}
+                                            {%- if archive.title -%}
+                                                <div class="contrib-tweet-title">{{- archive.title -}}</div>{{- '' -}}
+                                            {%- endif -%}
+                                            <div class="archive-content markdown-body">{{- '' -}}
+                                                {{- archive.summary | safe -}}{{- '' -}}
+                                            </div>{{- '' -}}
+                                        </div>{{- '' -}}
+                                        <div class="contrib-tweet-short">{{- '' -}}
+                                            <a href="{{- archive.url | safe -}}">#{{- archive.short -}}</a>{{- '' -}}
+                                        </div>{{- '' -}}
+                                    </div>{{- '' -}}
+                                </div>{{- '' -}}
+                            {%- else -%}
+                                {%- if archive.show_badge -%}
+                                    <div class="contrib-archive-badge">{{- '' -}}
+                                        <span class="octicon-repo_push"></span>{{- '' -}}
+                                    </div>{{- '' -}}
+                                {%- else -%}
+                                    <div class="contrib-archive-badge-placeholder"></div>{{- '' -}}
+                                {%- endif -%}
+                                <div class="contrib-archive">{{- '' -}}
+                                    <div class="contrib-archive-info">{{- '' -}}
+                                        <div class="contrib-archive-title">{{- '' -}}
+                                            {%- if archive.sticky > 0 -%}
+                                                <span class="archives-coticon-blue"><span class="octicon-pin"></span></span>{{- ' ' -}}
+                                            {%- endif -%}
+                                            <a href="{{ archive.url | safe }}" title="{{ archive.title }}">{{ archive.title }}</a>{{- '' -}}
+                                        </div>{{- '' -}}
+                                    </div>{{- '' -}}
+                                    <div class="contrib-archive-desc">{{- '' -}}
+                                        <span>{{- archive.summary | truncate(length=20, end='') -}}</span>{{- ' ' -}}
+                                        {%- for category in archive.categories -%}
+                                            <a href="{{ category.url | safe }}">{{ category.title }}</a>{{- ' ' -}}
+                                        {%- endfor -%}
+                                        {%- for tag in archive.tags -%}
+                                            <a href="{{ tag.url | safe }}">{{ tag.title }}</a>{{- ' ' -}}
+                                        {%- endfor -%}
+                                        {%- if archive.url is starting_with("/archives/") and archive.short -%}
+                                            <a href="{{ archive.url | safe }}">#{{ archive.short }}</a>{{- '' -}}
+                                        {%- endif -%}
+                                    </div>{{- '' -}}
+                                </div>{{- '' -}}
+                            {%- endif -%}
+                        </li>
+                    {%- endfor -%}
+                </ul>{{- '' -}}
+            </div>{{- '' -}}
+        {%- endfor -%}
+    {%- endfor -%}
+{%- endmacro -%}

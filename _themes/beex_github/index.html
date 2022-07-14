@@ -1,0 +1,112 @@
+{%- extends 'layout.html' -%}
+{%- import 'macros/box.html' as box -%}
+
+{%- block file_nav -%}{%- endblock -%}
+
+{%- macro user_details_link(title, url) -%}
+    {%- if url -%}
+        <a href="{{- url | safe -}}">{{- title -}}</a>
+    {%- else -%}
+        {{- title -}}
+    {%- endif -%}
+{%- endmacro -%}
+
+{%- block main_body -%}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" charset="utf-8"></script>
+{%- if theme_ctx.is_heatmap_on -%}
+    <script src="{{ 'static/contribution_graph.js' | to_static | safe }}" charset="utf-8"></script>
+    <link rel="stylesheet" href="{{ 'static/contribution_graph.css' | to_static | safe }}">{{- '' -}}
+{%- endif -%}
+<link rel="stylesheet" href="{{ 'static/homepage.css' | to_static | safe }}">{{- '' -}}
+<div class="homepage-container">{{- '' -}}
+    <div class="homepage-content">
+        {%- if theme_ctx.pinned_repositories -%}
+            <div class="pinned-repositories-title">置顶的</div>
+            <div class="pinned-repositories">{{- '' -}}
+                {%- for repo in theme_ctx.pinned_repositories -%}
+                    <div class="pinned-repo">{{- '' -}}
+                        <div class="pinned-repo-title">{{- '' -}}
+                            <span class="pinned-repo-icon" style="color: {{ theme_ctx.language_colors[repo.language] -}}"><span class="octicon-repo"></span></span>{{- '' -}}
+                            <a href="{{- repo.url | safe -}}">{{- '' -}}
+                                {{- repo.title | safe -}}
+                            </a>{{- '' -}}
+                        </div>{{- '' -}}
+                        <div class="pinned-repo-desc">{{- repo.description | safe -}}</div>{{- '' -}}
+                        <div class="pinned-repo-info">{{- '' -}}
+                            <div class="pinned-repo-language">{{- '' -}}
+                                <div class="pinned-repo-language-color" style="background-color: {{ theme_ctx.language_colors[repo.language] -}}"></div>{{- ' ' -}}
+                                {{- repo.language -}}
+                            </div>{{- '' -}}
+                            <div class="pinned-repo-stars">{{- '' -}}
+                                <span class="octicon-star"></span> {{ repo.stars | safe -}}
+                            </div>{{- '' -}}
+                            <div class="pinned-repo-forks">{{- '' -}}
+                                <span class="octicon-repo_forked"></span> {{ repo.forks | safe -}}
+                            </div>{{- '' -}}
+                        </div>{{- '' -}}
+                    </div>{{- '' -}}
+                {%- endfor -%}
+            </div>{{- '' -}}
+        {%- endif -%}
+        <div class="contrib">{{- '' -}}
+            {%- if theme_ctx.is_heatmap_on -%}
+                {%- set t1 = archives | length -%}
+                {%- set t2 = tags | length -%}
+                {%- set t3 = categories | length -%}
+                {%- set t4 = t1 + t2 + t3 -%}
+                <p>{{- t4 }} contributions in the last year</p>{{- '' -}}
+                <div class="contrib-heatmap">{{- '' -}}
+                    <div class="contrib-heatmap-graph"><div id="cal-heatmap"></div></div>{{- '' -}}
+                    <div class="contrib-heatmap-legend">Less <ul>{{- '' -}}
+                        <li style="background-color: #ebedf0"></li>{{- ' ' -}}
+                            <li style="background-color: #9be9a8"></li>{{- ' ' -}}
+                            <li style="background-color: #40c463"></li>{{- ' ' -}}
+                            <li style="background-color: #30a14e"></li>{{- ' ' -}}
+                            <li style="background-color: #216e39"></li>{{- '' -}}
+                        </ul> More</div>{{- '' -}}
+                </div>{{- '' -}}
+                <script type="text/javascript">{{- '' -}}
+                    var cal_today = new Date();{{- '' -}}
+                    $('#cal-heatmap').github_graph({ {{- '' -}}
+                        data: [ {{- '' -}}
+                            {%- for archive in archives -%}
+                                new Date({{- archive.created | date(format="%Y, %m - 1, %d") -}}),{{- '' -}}
+                            {%- endfor -%}
+                        ],{{- '' -}}
+                        texts: ['commit','commits'],{{- '' -}}
+                    });{{- '' -}}
+                    $('#cal-heatmap').scrollLeft($('#cal-heatmap')[0].scrollWidth);{{- '' -}}
+                </script>{{- '' -}}
+            {%- endif -%}
+            <div class="contrib-title">Contribution Activity</div>{{- '' -}}
+            <ul class="contrib-list">{{- '' -}}
+                {{- box::activities(activities=theme_ctx.activities, max=100, skip_tags=[]) -}}
+            </ul>{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+    <div class="homepage-sidebar">{{- '' -}}
+        <div class="shake-trigger">{{- '' -}}
+            <div class="usercard-avatar shake-crazy">{{- '' -}}
+                {{- theme_ctx.avatar | safe -}}{{- '' -}}
+            </div>{{- '' -}}
+            <div class="usercard-fields">{{- '' -}}
+                <div class="usercard-fullname shake-hard">{{- theme_ctx.user_details.fullname | safe -}}</div>{{- '' -}}
+                <div class="usercard-nickname shake">{{- theme_ctx.user_details.username | safe -}}</div>{{- '' -}}
+            </div>{{- '' -}}
+            <div class="usercard-fields">{{- '' -}}
+                <div class="usercard-field usercard-desc shake-opacity">{{- theme_ctx.user_details.description | safe -}}</div>{{- '' -}}
+            </div>{{- '' -}}
+            <div class="usercard-fields shake-vertical">{{- '' -}}
+                <span class="octicon-people"></span> <span class="usercard-statistic-number">{{- theme_ctx.user_details.followers | safe -}}</span> followers {{- ' · ' -}}
+                <span class="usercard-statistic-number">{{- theme_ctx.user_details.following | safe -}}</span> following {{- ' ' -}}
+                <span class="octicon-star"></span> <span class="usercard-statistic-number">{{- theme_ctx.user_details.stars | safe -}}</span>{{- '' -}}
+            </div>{{- '' -}}
+            <div class="usercard-fields">{{- '' -}}
+                <div class="usercard-field shake-hard"><span class="octicon-organization"></span> {{ theme_ctx.user_details.organization | safe -}}</div>{{- '' -}}
+                <div class="usercard-field shake-horizontal"><span class="octicon-location"></span> {{ theme_ctx.user_details.location | safe -}}</div>{{- '' -}}
+                <div class="usercard-field shake-slow"><span class="octicon-link"></span> {{ theme_ctx.user_details.website | safe -}}</div>{{- '' -}}
+            </div>{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+</div>{{- '' -}}
+{%- endblock -%}

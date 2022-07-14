@@ -1,0 +1,64 @@
+{%- extends 'layout.html' -%}
+{%- import 'macros/box.html' as box -%}
+
+{%- block main_body -%}
+<style>.markdown-body{font-size: 14px;}</style>{{- '' -}}
+<div class="homepage-container">{{- '' -}}
+    <div class="box">{{- '' -}}
+        {{- box::archives_head() -}}
+        <div class="box-body">{{- '' -}}
+            <ul class="archives-list">{{- '' -}}
+                {{- box::archives(archives=archives, max=100, with_back=false, skip_tags=['tweet']) -}}
+            </ul>{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+    {%- for tag in tags -%}
+        {%- if tag.title == 'tweet' -%}
+            <link rel="stylesheet" href="{{ 'static/tweet.css' | to_static | safe }}">{{- '' -}}
+            <style>{{- '' -}}
+                .timeline-item .timeline-item-avatar{ {{- '' -}}
+                    display: none;{{- '' -}}
+                }{{- '' -}}
+                .timeline-item .timeline-item-caret::before,{{- '' -}}
+                .timeline-item .timeline-item-caret::after{ {{- '' -}}
+                    display: none;{{- '' -}}
+                }{{- '' -}}
+                .timeline-item .box-head-avatar{ {{- '' -}}
+                    display: inline-block;{{- '' -}}
+                }{{- '' -}}
+                .timeline-item .timeline-item-archive{ {{- '' -}}
+                    margin-left: 0;{{- '' -}}
+                }{{- '' -}}
+                .timeline-item .box-body{ {{- '' -}}
+                    padding: 14px 10px;{{- '' -}}
+                }{{- '' -}}
+                @media screen and (min-width: 1024px){ {{- '' -}}
+                    .file-nav{ {{- '' -}}
+                        width: 70%;{{- '' -}}
+                    }{{- '' -}}
+                    .homepage-container{ {{- '' -}}
+                        display: grid;{{- '' -}}
+                        grid-template-columns: 70% calc(30% - 16px);{{- '' -}}
+                        grid-column-gap: 16px;{{- '' -}}
+                    }{{- '' -}}
+                    .homepage-container .box-head:first-child{ {{- '' -}}
+                        margin-top: 0;{{- '' -}}
+                    }{{- '' -}}
+                    .homepage-sidebar{ {{- '' -}}
+                        margin-top: -48px;{{- '' -}}
+                    }{{- '' -}}
+                    .timeline-item .box-body{ {{- '' -}}
+                        padding: 14px;{{- '' -}}
+                    }{{- '' -}}
+                }{{- '' -}}
+            </style>{{- '' -}}
+            <div class="homepage-sidebar">{{- '' -}}
+                <ul class="archives-list">{{- '' -}}
+                    {{- box::tweets(archives=tag.archives, max=33) -}}
+                </ul>{{- '' -}}
+            </div>{{- '' -}}
+        {%- break -%}
+        {%- endif -%}
+    {%- endfor -%}
+</div>{{- '' -}}
+{%- endblock -%}

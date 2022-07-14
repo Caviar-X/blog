@@ -1,0 +1,101 @@
+{%- macro branches(categories='', tags='') -%}
+<div class="branch-btn">{{- '' -}}
+    <div class="btn" onclick="javascript:toggleBranch()">{{- '' -}}
+        {%- if tags | length > 0 -%}
+            <span class="octicon-tag"></span>{{- '' -}}
+            <span class="branch">Tag:</span>{{- ' ' -}}
+        {%- else -%}
+            <span class="octicon-git_branch"></span>{{- '' -}}
+            <span class="branch">Branch:</span>{{- ' ' -}}
+        {%- endif -%}
+        <strong class="branch-title">{{- '' -}}
+        {%- if tags | length > 0 -%}
+            {{- tags[0].title -}}
+        {%- elif categories | length > 0 -%}
+            {{- categories[0].title -}}
+        {%- else -%}
+            master{{- '' -}}
+        {%- endif -%}
+        </strong>{{- ' ' -}}
+        <span class="dropdown-caret"></span>{{- '' -}}
+    </div>{{- '' -}}
+    <div id="branch-btn-panel" class="box">{{- '' -}}
+        <div class="branch-btn-mask" onclick="javascript:toggleBranch()"></div>{{- '' -}}
+        <div class="box-head box-head-white">{{- '' -}}
+            <span>Switch branches/tags</span>{{- '' -}}
+            <div onclick="javascript:toggleBranch()"><span class="octicon-x"></span></div>{{- '' -}}
+        </div>{{- '' -}}
+        <div class="box-body">{{- '' -}}
+            <div id="branch-btn-btns">{{- '' -}}
+                <div id="branch-btn-b" class="btn" onclick="javascript:switchBranch('branch-btn-b')">Branches</div>{{- '' -}}
+                <div id="branch-btn-t" class="btn" onclick="javascript:switchBranch('branch-btn-t')">Tags</div>{{- '' -}}
+            </div>{{- '' -}}
+            <ul id="branch-btn-b-list">{{- '' -}}
+                {%- if categories | length > 0 -%}
+                    {%- for category in categories -%}
+                        <li
+                            {%- if loop.index == 1 -%}
+                                {{- ' ' -}}class="active"
+                            {%- endif -%}
+                        >{{- '' -}}
+                            {%- if loop.index == 1 -%}
+                                <span class="octicon-check"></span>{{- '' -}}
+                            {%- else -%}
+                                <div class="font-16">&emsp;</div>{{- '' -}}
+                            {%- endif -%}
+                            <a href="{{ category.url | safe}}">{{- '' -}}
+                                {{- category.title -}}
+                            </a>{{- '' -}}
+                        </li>{{- '' -}}
+                    {%- endfor -%}
+                {%- else -%}
+                    <li class="active"><span class="octicon-check"></span><span>master</span></li>{{- '' -}}
+                {%- endif -%}
+            </ul>{{- '' -}}
+            <ul id="branch-btn-t-list">{{- '' -}}
+                {%- if tags | length > 0 -%}
+                    {%- for tag in tags -%}
+                        <li
+                            {%- if loop.index == 1 -%}
+                                {{- ' ' -}}class="active"
+                            {%- endif -%}
+                        >{{- '' -}}
+                            {%- if loop.index == 1 -%}
+                                <span class="octicon-check"></span>{{- '' -}}
+                            {%- else -%}
+                                <div class="font-16">&emsp;</div>{{- '' -}}
+                            {%- endif -%}
+                            <a href="{{ tag.url | safe}}">{{- '' -}}
+                                {{- tag.title -}}
+                            </a>{{- '' -}}
+                        </li>{{- '' -}}
+                    {%- endfor -%}
+                {%- else -%}
+                    <li><div class="font-16">&emsp;</div><span>&nbsp;</span></li>{{- '' -}}
+                {%- endif -%}
+            </ul>{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+</div>{{- '' -}}
+<script>{{- '' -}}
+    var switchBranch = function(id){ {{- '' -}}
+        document.getElementById(id).classList.add('active');{{- '' -}}
+        var ids = ['branch-btn-b', 'branch-btn-b-list', 'branch-btn-t', 'branch-btn-t-list'];{{- '' -}}
+        for(var i=0; i<ids.length; i++){ {{- '' -}}
+            if(ids[i] !== id){ {{- '' -}}
+                document.getElementById(ids[i]).classList.remove('active');{{- '' -}}
+            }{{- '' -}}
+        }{{- '' -}}
+        document.getElementById(id + '-list').classList.add('active');{{- '' -}}
+    };{{- '' -}}
+    {%- if tags | length > 0 -%}
+        switchBranch('branch-btn-t');{{- '' -}}
+    {%- else -%}
+        switchBranch('branch-btn-b');{{- '' -}}
+    {%- endif -%}
+    var toggleBranch = function(){ {{- '' -}}
+        var el = document.getElementById('branch-btn-panel');{{- '' -}}
+        el.style.display = el.style.display == 'block' ? 'none' : 'block';{{- '' -}}
+    };{{- '' -}}
+</script>{{- '' -}}
+{%- endmacro -%}

@@ -1,0 +1,17 @@
+{%- extends 'archives.html' -%}
+{%- import 'macros/box.html' as box -%}
+
+{%- block head_title -%}
+    全部分类 | {{ site.title -}}
+{%- endblock -%}
+
+{%- block main_body -%}
+    <div class="box">{{- '' -}}
+        {{- box::archives_head() -}}
+        <div class="box-body">{{- '' -}}
+            <ul class="archives-list">{{- '' -}}
+                {{- box::terms(terms=categories) -}}
+            </ul>{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+{%- endblock -%}

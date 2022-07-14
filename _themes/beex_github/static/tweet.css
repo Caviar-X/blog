@@ -1,0 +1,117 @@
+.timeline-item{
+    display: flex;
+    position: relative;
+}
+.timeline-item-avatar{
+    width: 40px;
+    min-width: 40px;
+    display: none;
+}
+.timeline-item-avatar,
+.timeline-item-avatar img{
+    border-radius: 50%;
+}
+.timeline-item-avatar,
+.timeline-item-archive{
+    padding: 16px 0;
+}
+.timeline-item .box-head-avatar{
+    width: 22px;
+    min-width: 22px;
+    margin-right: 8px;
+}
+@media screen and (min-width: 768px){
+    .timeline-item-avatar{
+        display: block;
+    }
+    .timeline-item .box-head-avatar{
+        display: none;
+    }
+}
+.timeline-item-first{
+    padding-top: 0;
+}
+.timeline-item-last{
+    padding-bottom: 0;
+}
+.timeline-item-archive{
+    flex-grow: 1;
+    position: relative;
+}
+@media screen and (min-width: 768px){
+    .timeline-item-archive{
+        margin-left: 16px;
+    }
+}
+.timeline-item-archive::before{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 18px;
+    display: block;
+    width: 2px;
+    content: "";
+    background-color: #e1e4e8;
+}
+.timeline-item-caret{
+    position: relative;
+}
+@media screen and (min-width: 768px){
+    .timeline-item-caret::before,
+    .timeline-item-caret::after{
+        display: block;
+        border-width: 8px;
+        position: absolute;
+        top: 14px;
+        right: 100%;
+        left: -16px;
+        display: block;
+        width: 0;
+        height: 0;
+        content: " ";
+        border-color: transparent;
+        border-right-color: #e1e4e8;
+        border-style: solid solid outset;
+    }
+    .timeline-item-caret::after{
+        left: -14px;
+        border-right-color: #f6f8fa;
+    }
+}
+.timeline-item .box-head,
+.timeline-item .box-body{
+    margin: 0;
+    padding: 16px 10px;
+}
+.timeline-item .box-body{
+    background-color: #fff;
+}
+@media screen and (min-width: 768px){
+    .timeline-item .box-head,
+    .timeline-item .box-body{
+        padding: 16px;
+    }
+}
+.timeline-item .timeline-item-title{
+    color: #24292e;
+    margin-right: 8px;
+}
+.timeline-item .archive-content{
+    max-width: 100%;
+}
+.timeline-item-event{
+    display: flex;
+    align-items: center;
+}
+.timeline-item-badge{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #fff;
+    margin-right: 8px;
+    background-color: #e1e4e8;
+    border-radius: 50%;
+}

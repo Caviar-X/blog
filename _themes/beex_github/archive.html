@@ -1,0 +1,40 @@
+{%- extends 'layout.html' -%}
+{%- import 'macros/box.html' as box -%}
+
+{%- block head_title -%}
+    {{- archive.title -}} | {{ site.title -}}
+{%- endblock -%}
+
+{%- block main_body -%}
+    {%- block archive_css -%}{%- endblock -%}
+    <div class="container-box">{{- '' -}}
+        {%- block archive_sidebar_1 -%}{%- endblock -%}
+        <div class="box">{{- '' -}}
+            {{- box::archive_head(archive=archive) -}}
+            <div class="box-body">{{- '' -}}
+                <div class="archive-content-wrapper">{{- '' -}}
+                    {%- if theme_ctx.is_todo_badge_on and archive.tags -%}
+                        {%- for tag in archive.tags -%}
+                            {%- if 'todo' in tag.title -%}
+                                <p style="text-align: center;">{{- '' -}}
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="146" height="20" role="img" aria-label="尚未完成: Not completed"><title>尚未完成: Not completed</title><linearGradient id="todo-s1" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="todo-r1"><rect width="146" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#todo-r1)"><rect width="55" height="20" fill="#555"/><rect x="55" width="91" height="20" fill="#fe7d37"/><rect width="146" height="20" fill="url(#todo-s1)"/></g><g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110"><text aria-hidden="true" x="285" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="450">尚未完成</text><text x="285" y="140" transform="scale(.1)" fill="#fff" textLength="450">尚未完成</text><text aria-hidden="true" x="995" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="810">Not completed</text><text x="995" y="140" transform="scale(.1)" fill="#fff" textLength="810">Not completed</text></g></svg>{{- ' ' -}}
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="158" height="20" role="img" aria-label="随时检查: Check back later"><title>随时检查: Check back later</title><linearGradient id="todo-s2" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="todo-r2"><rect width="158" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#todo-r2)"><rect width="55" height="20" fill="#555"/><rect x="55" width="103" height="20" fill="#fe7d37"/><rect width="158" height="20" fill="url(#todo-s2)"/></g><g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110"><text aria-hidden="true" x="285" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="450">随时检查</text><text x="285" y="140" transform="scale(.1)" fill="#fff" textLength="450">随时检查</text><text aria-hidden="true" x="1055" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="930">Check back later</text><text x="1055" y="140" transform="scale(.1)" fill="#fff" textLength="930">Check back later</text></g></svg>{{- '' -}}
+                                </p>{{- '' -}}
+                                {%- break -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {%- endif -%}
+                    <ol id="archive-toc"></ol>{{- '' -}}
+                    <div class="archive-content markdown-body">{{ archive.content | safe }}</div>{{- '' -}}
+                    {%- block archive_js -%}
+                        <script async src="{{ 'static/archive.js' | to_static | safe }}"></script>{{- '' -}}
+                    {%- endblock -%}
+                </div>{{- '' -}}
+            </div>{{- '' -}}
+        </div>{{- '' -}}
+        {%- block archive_sidebar_2 -%}{%- endblock -%}
+    </div>{{- '' -}}
+    {%- block archive_comments -%}
+        {{- theme_ctx.comments | safe -}}
+    {%- endblock -%}
+{%- endblock -%}

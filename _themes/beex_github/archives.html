@@ -1,0 +1,45 @@
+{%- extends 'layout.html' -%}
+{%- import 'macros/box.html' as box -%}
+
+{%- block head_title -%}
+    {%- if categories | length == 1 -%}
+        {{- categories[0].title }} | {{ site.title -}}
+    {%- elif tags | length == 1 -%}
+        {{- tags[0].title }} | {{ site.title -}}
+    {%- elif archives | length > 0 -%}
+        最近文章 | {{ site.title -}}
+    {%- else -%}
+        {{- site.title }} | {{ site.tagline -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block branch_title -%}
+    {%- if categories | length == 1 -%}
+        {{- categories[0].title -}}
+    {%- elif tags | length == 1 -%}
+        {{- tags[0].title -}}
+    {%- elif archives | length > 0 -%}
+        最近文章{{- '' -}}
+    {%- else -%}
+        master{{- '' -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block main_body -%}
+    <div class="box">{{- '' -}}
+        {{- box::archives_head() -}}
+        <div class="box-body">{{- '' -}}
+            <ul class="archives-list">{{- '' -}}
+            {%- for category in categories -%}
+                {{- box::archives(archives=category.archives) -}}
+            {%- endfor -%}
+            {%- for tag in tags -%}
+                {{- box::archives(archives=tag.archives) -}}
+            {%- endfor -%}
+            {%- if archives -%}
+                {{- box::archives(archives=archives, skip_tags=['tweet']) -}}
+            {%- endif -%}
+            </ul>{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+{%- endblock -%}

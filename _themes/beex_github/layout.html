@@ -1,0 +1,183 @@
+{%- import "macros/button.html" as button-%}
+
+<!DOCTYPE html>{{- '' -}}
+<html>{{- '' -}}
+<head>{{- '' -}}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">{{- '' -}}
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">{{- '' -}}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">{{- '' -}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css">{{- '' -}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.3.2/build/styles/atom-one-dark.min.css">{{- '' -}}
+    <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.3.2/build/highlight.min.js" onload="hljs.initHighlightingOnLoad();"></script>{{- '' -}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">{{- '' -}}
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>{{- '' -}}
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>{{- '' -}}
+    <title>{{- '' -}}
+{%- block head_title -%}
+    {{- site.title }} | {{ site.tagline -}}
+{%- endblock -%}
+    </title>{{- '' -}}
+    <link rel="stylesheet" href="{{ 'static/style.css' | to_static | safe }}">{{- '' -}}
+    <script defer src="{{ 'static/octicon.js' | to_static | safe }}" onload="beexThemeGithub.initOnLoad()"></script>{{- '' -}}
+    {%- if theme_ctx.is_shake_on -%}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/csshake@1.5.3/dist/csshake.min.css">{{- '' -}}
+    {%- endif -%}
+{%- block head -%}{%- endblock -%}
+    {{- theme_ctx.html_head | safe -}}
+</head>{{- '' -}}
+<body>{{- '' -}}
+{%- block header -%}
+    <div class="header-wrapper">{{- '' -}}
+        <div class="header">{{- '' -}}
+            <div class="header-left">{{- '' -}}
+                <span class="octicon-mark_github" data-width="32" data-viewBox="0 0 16 16"></span>{{- '' -}}
+                <ul class="header-menu">{{- '' -}}
+                    <li><span>喵喵喵幼儿园git服务</span></li>{{- '' -}}
+                </ul>{{- '' -}}
+            </div>{{- '' -}}
+            <div class="header-right">{{- '' -}}
+                <a href="javascript:login()">Sign in</a>{{- '' -}}
+                <span class="btn" style="margin-left: 1em;" onclick="javascript:login()">Sign up</span>{{- '' -}}
+                <style>{{- '' -}}
+                    #login-wrapper{display: none; z-index: 30; justify-content: center; align-items: center;}{{- '' -}}
+                    .login-wrapper{position: fixed; top: 0; right: 0; bottom: 0; left: 0;}{{- '' -}}
+                    .login-mask{background-color: #fff; opacity: .85;}{{- '' -}}
+                    .login-msg{position: fixed; color: #000; background-color: #fff; border: 1px solid #e1e4e8; border-radius: 6px; padding: 2em;}{{- '' -}}
+                </style>{{- '' -}}
+                <div id="login-wrapper" class="login-wrapper" onclick="javascript:login()">{{- '' -}}
+                    <div class="login-mask login-wrapper"></div>{{- '' -}}
+                    <div class="login-msg">暂未支持登陆</div>{{- '' -}}
+                </div>{{- '' -}}
+                <script>{{- '' -}}
+                    var login = function(){ {{- '' -}}
+                        var el = document.getElementById('login-wrapper');{{- '' -}}
+                        el.style.display = el.style.display == 'flex' ? 'none' : 'flex';{{- '' -}}
+                    };{{- '' -}}
+                </script>{{- '' -}}
+            </div>{{- '' -}}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+{%- endblock -%}
+    <div class="pagehead">{{- '' -}}
+        <div class="pagehead-repo">{{- '' -}}
+            <div class="pagehead-repo-info">{{- '' -}}
+                <span class="octicon-repo"></span>{{- ' ' -}}
+                {%- if ctx.current_url == '/' -%}
+                    <a href="/">{{ site.author }}</a> /{{- ' ' -}}
+                    <strong><a href="/">{{ site.title }}</a></strong>{{- '' -}}
+                {%- elif archive.categories -%}
+                    <a href="/">{{ site.title }}</a> /{{- ' ' -}}
+                    <strong><a href="{{ archive.categories[0].url | safe }}">{{ archive.categories[0].title }}</a></strong>{{- '' -}}
+                {%- elif archive.tags -%}
+                    <a href="/">{{ site.title }}</a> /{{- ' ' -}}
+                    <strong><a href="{{ archive.tags[0].url | safe }}">{{ archive.tags[0].title }}</a></strong>{{- '' -}}
+                {%- elif categories -%}
+                    <a href="/">{{ site.title }}</a> /{{- ' ' -}}
+                    <strong><a href="{{ categories[0].url | safe }}">{{ categories[0].title }}</a></strong>{{- '' -}}
+                {%- elif tags -%}
+                    <a href="/">{{ site.title }}</a> /{{- ' ' -}}
+                    <strong><a href="{{ tags[0].url | safe }}">{{ tags[0].title }}</a></strong>{{- '' -}}
+                {%- else -%}
+                    <a href="/">{{ site.author }}</a> /{{- ' ' -}}
+                    <strong><a href="/">{{ site.title }}</a></strong>{{- '' -}}
+                {%- endif -%}
+            </div>{{- '' -}}
+            <div class="pagehead-repo-actions">{{- '' -}}
+                {%- for repo_action in theme_ctx.repo_actions -%}
+                    <div>{{- '' -}}
+                        <span class="btn btn-with-count">{{ repo_action.icon | safe }} {{ repo_action.title | safe }}</span>{{- '' -}}
+                        <span class="btn btn-count">{{ repo_action.total | safe }}</span>{{- '' -}}
+                    </div>{{- '' -}}
+                {%- endfor -%}
+            </div>{{- '' -}}
+        </div>{{- '' -}}
+        <div class="pagehead-nav">{{- '' -}}
+            {%- for repo_nav in theme_ctx.repo_navigator -%}
+                {%- if ctx.current_url == repo_nav.url -%}
+                    <div class="pagehead-nav-item pagehead-nav-item-active">{{- '' -}}
+                {%- else -%}
+                    <div class="pagehead-nav-item">{{- '' -}}
+                {%- endif -%}
+                    {%- if repo_nav.url -%}
+                        <a href="{{ repo_nav.url | safe }}">{{- '' -}}
+                    {%- endif -%}
+                        {{- repo_nav.icon | safe }} {{ repo_nav.title | safe -}}
+                        {%- if repo_nav.total | safe -%}{{- ' ' -}}
+                            <span class="counter">{{ repo_nav.total | safe }}</span>{{- '' -}}
+                        {%- endif -%}
+                    {%- if repo_nav.url -%}
+                        </a>{{- '' -}}
+                    {%- endif -%}
+                </div>{{- '' -}}
+            {%- endfor -%}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+    <div class="container-wrapper">{{- '' -}}
+        <div class="container">{{- '' -}}
+        {%- block file_nav -%}
+            <div class="file-nav">{{- '' -}}
+                <div class="file-nav-info">{{- '' -}}
+                    {%- if archive.title -%}
+                        {{- button::branches(categories=archive.categories, tags=archive.tags) -}}
+                    {%- elif archives | length == 0 -%}
+                        {{- button::branches(categories=categories, tags=tags) -}}
+                    {%- else -%}
+                        {{- button::branches() -}}
+                    {%- endif -%}
+                    {%- if archive.title -%}
+                        <div class="file-nav-filename">{{- '' -}}
+                            <a href="/">{{ archive.author }}</a> / {{ archive.title }}.md{{- '' -}}
+                        </div>{{- '' -}}
+                    {%- endif -%}
+                </div>{{- '' -}}
+                <div class="file-nav-actions">{{- '' -}}
+                    <a class="btn" href="javascript:toggleQrUrl()">{{- '' -}}
+                        <strong>移动浏览</strong>{{- '' -}}
+                    </a>{{- '' -}}
+                    {%- if theme_ctx.file_actions.primary -%}
+                        <a class="btn btn-primary" href="{{ theme_ctx.file_actions.primary.url | safe }}">{{- '' -}}
+                            {{- theme_ctx.file_actions.primary.title | safe -}}
+                        </a>{{- '' -}}
+                    {%- endif -%}
+                    {%- if theme_ctx.base_url -%}
+                        <div id="qr-url">{{- '' -}}
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ theme_ctx.base_url | safe }}{{ ctx.current_url | safe }}" alt="加载中...">{{- '' -}}
+                            <div>到移动设备上浏览</div>{{- '' -}}
+                        </div>{{- '' -}}
+                        <style>{{- '' -}}
+                            #qr-url{ {{- '' -}}
+                                display: none;{{- '' -}}
+                                margin-top: 8px;{{- '' -}}
+                                padding: 8px;{{- '' -}}
+                                position: absolute;{{- '' -}}
+                                z-index: 10;{{- '' -}}
+                                font-size: 12px;{{- '' -}}
+                                text-align: center;{{- '' -}}
+                                background-color: #fff;{{- '' -}}
+                                border: 1px solid #e1e4e8;{{- '' -}}
+                                border-radius: 6px;{{- '' -}}
+                            }{{- '' -}}
+                            #qr-url div{ {{- '' -}}
+                                line-height: 20px;{{- '' -}}
+                            }{{- '' -}}
+                        </style>{{- '' -}}
+                        <script>{{- '' -}}
+                            var toggleQrUrl = function(){ {{- '' -}}
+                                var el = document.getElementById("qr-url");{{- '' -}}
+                                el.style.display = el.style.display == 'block' ? 'none' : 'block';{{- '' -}}
+                            };{{- '' -}}
+                        </script>{{- '' -}}
+                    {%- endif -%}
+                </div>{{- '' -}}
+            </div>{{- '' -}}
+        {%- endblock -%}
+        {%- block main_body -%}{%- endblock -%}
+        </div>{{- '' -}}
+    </div>{{- '' -}}
+    <div class="footer">{{- '' -}}
+        {{- theme_ctx.footer | safe -}}
+        <div class="powered-by">Theme: <a target="_blank" href="http://www.telihai.com/archives/9077/">Beex Github</a></div>{{- ' ' -}}
+        <div class="powered-by">Powered by <a target="_blank" href="http://www.telihai.com/archives/9002/">Beex</a></div>{{- '' -}}
+    </div>{{- '' -}}
+</body>{{- '' -}}
+</html>{{- '' -}}
