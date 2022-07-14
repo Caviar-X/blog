@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{%- block main_body %}
+    <h1 class="archive-title">{{ archive.title }}</h1>
+    <div class="archive-meta">
+    {% if archive.author -%}
+        <span class="archive-author">{{ archive.author }}</span>
+    {% endif -%}
+    {% if archive.created -%}
+        <span class="archive-created">{{ archive.created | date(format="%Y-%m-%d") }}</span>
+    {% endif -%}
+    {% if archive.categories -%}
+        <div class="archive-categories">
+        {% for category in archive.categories -%}
+            <span class="archive-category"><a href="{{ category.url | urlencode | safe }}">{{ category.title }}</a></span>
+        {% endfor -%}
+        </div>
+    {% endif -%}
+    {% if archive.tags -%}
+        <div class="archive-tags">
+        {% for tag in archive.tags -%}
+            <span class="archive-tag"><a href="{{ tag.url | urlencode | safe }}">{{ tag.title }}</a></span>
+        {% endfor -%}
+        </div>
+    {% endif -%}
+    </div>
+    <div class="archive-content markdown-body">{{ archive.content | safe }}</div>
+{%- endblock %}

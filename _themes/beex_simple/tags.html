@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{%- block main_body %}
+    <ul class="archives-list">
+    {%- for tag in tags %}
+        <li class="archives-item"><a href="{{ tag.url | urlencode | safe }}">{{ tag.title }}</a></li>
+    {%- endfor %}
+    </ul>
+{%- endblock %}

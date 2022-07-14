@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/atom-one-dark.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    {% if archive.title -%}
+        <title>{{ archive.title }} | {{ site.title }}</title>
+    {% else -%}
+        <title>{{ site.title }} | {{ site.tagline }}</title>
+    {% endif -%}
+    <link rel="stylesheet" type="text/css" href="{{ 'static/style.css' | to_static | safe }}">
+</head>
+<body>
+{%- block header %}
+    <div class="header">
+        <a class="site-title" href="/">{{ site.title }}</a>{{- '' -}}
+        <span class="menu-top">
+        {%- if menus.top -%}
+            {%- for menu_item in menus.top -%}
+                <a href="{{ menu_item.url | urlencode | safe }}">{{ menu_item.title }}</a>
+            {%- endfor -%}
+        {%- else -%}
+            {%- for menu_item in menus.main -%}
+                <a href="{{ menu_item.url | urlencode | safe }}">{{ menu_item.title }}</a>
+            {%- endfor -%}
+        {%- endif -%}
+        </span>
+    </div>
+{%- endblock %}
+    <div class="container">
+{%- block main_body -%}{%- endblock -%}
+    </div>
+    <div class="footer">
+        <div class="powered-by">Powered by <a target="_blank" href="http://www.telihai.com/archives/9002/">Beex</a></div>
+    </div>
+</body>
+</html>

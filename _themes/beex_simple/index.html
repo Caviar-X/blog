@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{%- block header %}{%- endblock %}
+
+{%- block main_body %}
+    <h1 class="homepage-title">{{ site.title }}</h1>
+    <div class="homepage-tagline">{{ site.tagline }}</div>
+    <ul class="archives-list">
+    {%- for archive in archives %}
+        <li class="archives-item"><a href="{{ archive.url | urlencode | safe }}">{{ archive.title }}</a></li>
+    {%- endfor %}
+    </ul>
+{%- endblock %}

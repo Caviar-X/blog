@@ -124,20 +124,18 @@ local config = {
     },
 
     -- 加载第三方评论代码
-    comments = [[]],
-    -- 例子：
-    -- comments = [[
-    --     <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-    --     <div id="vcomments"></div>
-    --     <script>
-    --         new Valine({
-    --             el: '#vcomments',
-    --             appId: 'Your appId',
-    --             appKey: 'Your appKey',
-    --             path: document.location.pathname,
-    --         })
-    --     </script>
-    -- ]],
+    comments = [[
+--         <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+--         <div id="vcomments"></div>
+--         <script>
+--             new Valine({
+--                 el: '#vcomments',
+--                 appId: 'JY7Qq5IQLUQyjIuqFDMmBfby-MdYXbMMI',
+--                 appKey: 'PCWGEPbBHPqsMqelqqhU9v68',
+--                 path: document.location.pathname,
+--             })
+--         </script>
+    ]],
 
     -- 自定义 HTML <head> 的内容
     html_head = [[]],

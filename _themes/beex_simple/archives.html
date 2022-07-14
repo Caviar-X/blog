@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{%- block main_body %}
+    {%- for category in categories %}
+        <h2 class="archives-category-title">{{ category.title }}</h2>
+        <ul class="archives-list">
+        {%- for archive in category.archives %}
+            <li class="archives-item"><a href="{{ archive.url | urlencode | safe }}">{{ archive.title }}</a></li>
+        {%- endfor %}
+        </ul>
+    {%- endfor %}
+    {%- for tag in tags %}
+        <h2 class="archives-tag-title">{{ tag.title }}</h2>
+        <ul class="archives-list">
+        {%- for archive in tag.archives %}
+            <li class="archives-item"><a href="{{ archive.url | urlencode | safe }}">{{ archive.title }}</a></li>
+        {%- endfor %}
+        </ul>
+    {%- endfor %}
+    {%- if archives %}
+        <ul class="archives-list">
+        {%- for archive in archives %}
+            <li class="archives-item"><a href="{{ archive.url | urlencode | safe }}">{{ archive.title }}</a></li>
+        {%- endfor %}
+        </ul>
+    {%- endif %}
+{%- endblock %}
