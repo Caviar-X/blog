@@ -60,15 +60,15 @@ local config = {
         },
         {
             icon = '<span class="octicon-issue_opened"></span>',
-            title = 'Issues',
-            total = '',
-            url = '#',
+            title = '友链',
+            total = '2',
+            url = '/link/index.html',
         },
         {
             icon = '<span class="octicon-git_pull_request"></span>',
-            title = 'Pull requests',
-            total = '',
-            url = '#',
+            title = '关于',
+            total = '0',
+            url = '/about/index.html',
         },
         {
             icon = '<span class="octicon-play"></span>',
@@ -124,18 +124,7 @@ local config = {
     },
 
     -- 加载第三方评论代码
-    comments = [[
---         <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
---         <div id="vcomments"></div>
---         <script>
---             new Valine({
---                 el: '#vcomments',
---                 appId: 'JY7Qq5IQLUQyjIuqFDMmBfby-MdYXbMMI',
---                 appKey: 'PCWGEPbBHPqsMqelqqhU9v68',
---                 path: document.location.pathname,
---             })
---         </script>
-    ]],
+    comments = [[]],
 
     -- 自定义 HTML <head> 的内容
     html_head = [[]],
