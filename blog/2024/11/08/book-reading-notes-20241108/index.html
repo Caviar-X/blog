@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/blog/./img/favicon.png">
+    <link rel="icon" type="image/png" href="/blog/./img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>Real World Ocaml (第2版) 读书笔记 (1-3章) - Synth Magic</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="Synth Magic">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="Real World Ocaml (第2版) 读书笔记 (1-3章)"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn{
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: var(--sec-bkg);
+    display: block;
+    padding: 0.9rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/blog/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/blog/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/blog/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/blog/css/main.css">
+    </noscript>
+
+    <script> MathJax = { tex: { inlineMath: [['$', '$']] }, svg: { fontCache: 'global' } }; </script> <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"> </script>
+    <script src="/blog/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+    <body>
+        <header>
+            
+<div class="header__left">
+	<a href="/blog/" class="button"><span class="logo__text">Synth Magic&#39;s blog</span></a>
+</div>
+<div class="header__right">
+	<div class="navbar__menus">
+		
+		<a href="/blog/" class="button">
+			<div class="navbar-menu">首页</div>
+		</a>
+		
+		<a target="_blank" rel="noopener" href="https://synthesizer.moe" class="button">
+			<div class="navbar-menu">个人主页</div>
+		</a>
+		
+	</div>
+	
+	<a href="/search/" class="button">
+		<div id="btn-search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32">
+				<path
+					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
+				</path>
+			</svg>
+		</div>
+	</a>
+	
+	<a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</div>
+	</a>
+	<a href="javaScript:void(0);" class="dropdown-icon button">
+		<div id="btn-dropdown">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32" stroke-linecap="round">
+				<path
+					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
+					fill="currentColor"></path>
+			</svg>
+		</div>
+	</a>
+	<div class="dropdown-menus" id="dropdown-menus">
+		
+		<a href="/blog/" class="dropdown-menu button">首页</a>
+		<br>
+		
+		<a target="_blank" rel="noopener" href="https://synthesizer.moe" class="dropdown-menu button">个人主页</a>
+		<br>
+		
+	</div>
+</div>
+
+        </header>
+        <div id="top"></div>
+        <div id="page-main" class="main-content">
+        <div class="mg-top">
+            
+
+<article class="page">
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>Real World Ocaml (第2版) 读书笔记 (1-3章)</h3>
+    
+      <span class="post-meta-label">
+        Synth Magic
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2024-11-08 18:29" pubdate>
+          2024-11-08
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 1.3k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Book-Reading-Report-Real-World-OCaml-2nd-Edition-Chapter-1-3"><span class="toc-number">1.</span> <span class="toc-text">Book Reading Report: Real World OCaml (2nd Edition) (Chapter 1-3)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary-of-Key-Chapters"><span class="toc-number">1.1.</span> <span class="toc-text">Summary of Key Chapters</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Chapter-1-A-Guided-Tour"><span class="toc-number">1.1.1.</span> <span class="toc-text">Chapter 1: A Guided Tour</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chapter-2-Variables-and-Functions"><span class="toc-number">1.1.2.</span> <span class="toc-text">Chapter 2: Variables and Functions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chapter-3-Lists-and-Patterns"><span class="toc-number">1.1.3.</span> <span class="toc-text">Chapter 3: Lists and Patterns</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusion"><span class="toc-number">1.2.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h1 id="Book-Reading-Report-Real-World-OCaml-2nd-Edition-Chapter-1-3"><a href="#Book-Reading-Report-Real-World-OCaml-2nd-Edition-Chapter-1-3" class="headerlink" title="Book Reading Report: Real World OCaml (2nd Edition) (Chapter 1-3)"></a>Book Reading Report: <em>Real World OCaml</em> (2nd Edition) (Chapter 1-3)</h1><h2 id="Summary-of-Key-Chapters"><a href="#Summary-of-Key-Chapters" class="headerlink" title="Summary of Key Chapters"></a>Summary of Key Chapters</h2><h3 id="Chapter-1-A-Guided-Tour"><a href="#Chapter-1-A-Guided-Tour" class="headerlink" title="Chapter 1: A Guided Tour"></a>Chapter 1: A Guided Tour</h3><blockquote>
+<p>REPL stands for Read, Evaluate, Print, and Loop,it is usually a environment where you can type in your code and get quick result</p>
+</blockquote>
+<p>All the operation now are done in <code>utop</code> (fancier REPL of ocaml) or the REPL of <code>ocaml</code></p>
+<p>This chapter covers the basics of OCaml, such as the most basic operator</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">3</span> + <span class="number">4</span>;;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">7</span></span><br><span class="line"># <span class="number">8</span> / <span class="number">3</span>;;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">2</span></span><br><span class="line"># <span class="number">3.5</span> +. <span class="number">6.</span>;;</span><br><span class="line">- : <span class="built_in">float</span> = <span class="number">9.5</span></span><br><span class="line"># <span class="number">30_000_000</span> / <span class="number">300_000</span>;;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">100</span></span><br><span class="line"># <span class="number">3</span> * <span class="number">5</span> &gt; <span class="number">14</span>;;</span><br><span class="line">- : <span class="built_in">bool</span> = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>Also introduces the most basic let-binding technique,which is essential for value-binding and function definition.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> x = <span class="number">3</span> + <span class="number">4</span>;; <span class="comment">(*Value Binding*)</span></span><br><span class="line"><span class="keyword">val</span> x : <span class="built_in">int</span> = <span class="number">7</span></span><br><span class="line"># <span class="keyword">let</span> y = x + x;;</span><br><span class="line"><span class="keyword">val</span> y : <span class="built_in">int</span> = <span class="number">14</span></span><br><span class="line"># <span class="keyword">let</span> square x = x * x;; <span class="comment">(*Function Definition*)</span></span><br><span class="line"><span class="keyword">val</span> square : <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br><span class="line"># square <span class="number">2</span>;;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">4</span></span><br><span class="line"># square (square <span class="number">2</span>);;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">16</span></span><br></pre></td></tr></table></figure>
+
+<p>Also it introduces the if statement.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> sum_if_true test first second =</span><br><span class="line">(<span class="keyword">if</span> test first <span class="keyword">then</span> first <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">+ (<span class="keyword">if</span> test second <span class="keyword">then</span> second <span class="keyword">else</span> <span class="number">0</span>);;</span><br><span class="line"><span class="keyword">val</span> sum_if_true : (<span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>Warning</strong>: <code>==</code> in ocaml means that two things are <strong>Physical equal</strong>,if you want to use structural equal or inequal please use <code>=</code> for equal and <code>&lt;&gt;</code> for inequal</p>
+</blockquote>
+<p>Type inference and generic types are also important in Ocaml because this impoves the experience and overall type system.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(*This is a function with full type notation*)</span></span><br><span class="line"><span class="comment">(*But we can skip it because of type inference*)</span></span><br><span class="line"># <span class="keyword">let</span> sum_if_true (test : <span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) (x : <span class="built_in">int</span>) (y : <span class="built_in">int</span>) : <span class="built_in">int</span> =</span><br><span class="line">(<span class="keyword">if</span> test x <span class="keyword">then</span> x <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">+ (<span class="keyword">if</span> test y <span class="keyword">then</span> y <span class="keyword">else</span> <span class="number">0</span>);;</span><br><span class="line"><span class="keyword">val</span> sum_if_true : (<span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br><span class="line"></span><br><span class="line"># <span class="keyword">let</span> sum_if_true (test : <span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) (x : <span class="built_in">int</span>) (y : <span class="built_in">int</span>) : <span class="built_in">int</span> =</span><br><span class="line">(<span class="keyword">if</span> test x <span class="keyword">then</span> x <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">+ (<span class="keyword">if</span> test y <span class="keyword">then</span> y <span class="keyword">else</span> <span class="number">0</span>);;</span><br><span class="line"><span class="keyword">val</span> sum_if_true : (<span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Then it introduces some useful data structure that are essential in development such as</p>
+<ul>
+<li><p>Tuples</p>
+</li>
+<li><p>Lists</p>
+</li>
+<li><p>Options</p>
+</li>
+<li><p>Record</p>
+</li>
+<li><p>Variants</p>
+</li>
+<li><p>Arrays</p>
+</li>
+<li><p>Mutable Record Fields</p>
+</li>
+<li><p>Refs</p>
+</li>
+</ul>
+<p>For basic loops conditioning ocaml supports <code>for</code> and <code>while</code></p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(*While loop*)</span></span><br><span class="line"># <span class="keyword">let</span> find_first_negative_entry <span class="built_in">array</span> =</span><br><span class="line"><span class="keyword">let</span> pos = <span class="built_in">ref</span> <span class="number">0</span> <span class="keyword">in</span></span><br><span class="line"><span class="keyword">while</span> !pos &lt; <span class="type">Array</span>.length <span class="built_in">array</span> &amp;&amp; <span class="built_in">array</span>.(!pos) &gt;= <span class="number">0</span> <span class="keyword">do</span></span><br><span class="line">pos := !pos + <span class="number">1</span></span><br><span class="line"><span class="keyword">done</span>;</span><br><span class="line"><span class="keyword">if</span> !pos = <span class="type">Array</span>.length <span class="built_in">array</span> <span class="keyword">then</span> <span class="type">None</span> <span class="keyword">else</span> <span class="type">Some</span> !pos;;</span><br><span class="line"><span class="keyword">val</span> find_first_negative_entry : <span class="built_in">int</span> <span class="built_in">array</span> -&gt; <span class="built_in">int</span> option = &lt;<span class="keyword">fun</span>&gt;</span><br><span class="line"># find_first_negative_entry [|<span class="number">1</span>;<span class="number">2</span>;<span class="number">0</span>;<span class="number">3</span>|];;</span><br><span class="line">- : <span class="built_in">int</span> option = <span class="type">None</span></span><br><span class="line"># find_first_negative_entry [|<span class="number">1</span>;-<span class="number">2</span>;<span class="number">0</span>;<span class="number">3</span>|];;</span><br><span class="line">- : <span class="built_in">int</span> option = <span class="type">Some</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">(*For loops*)</span></span><br><span class="line"># <span class="keyword">let</span> permute <span class="built_in">array</span> =</span><br><span class="line"><span class="keyword">let</span> length = <span class="type">Array</span>.length <span class="built_in">array</span> <span class="keyword">in</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">0</span> <span class="keyword">to</span> length - <span class="number">2</span> <span class="keyword">do</span></span><br><span class="line"><span class="comment">(* pick a j to swap with *)</span></span><br><span class="line"><span class="keyword">let</span> j = i + <span class="type">Random</span>.<span class="built_in">int</span> (length - i) <span class="keyword">in</span></span><br><span class="line"><span class="comment">(* Swap i and j *)</span></span><br><span class="line"><span class="keyword">let</span> tmp = <span class="built_in">array</span>.(i) <span class="keyword">in</span></span><br><span class="line"><span class="built_in">array</span>.(i) &lt;- <span class="built_in">array</span>.(j);</span><br><span class="line"><span class="built_in">array</span>.(j) &lt;- tmp</span><br><span class="line"><span class="keyword">done</span>;;</span><br><span class="line"><span class="keyword">val</span> permute : <span class="symbol">&#x27;a</span> <span class="built_in">array</span> -&gt; <span class="built_in">unit</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Chapter-2-Variables-and-Functions"><a href="#Chapter-2-Variables-and-Functions" class="headerlink" title="Chapter 2: Variables and Functions"></a>Chapter 2: Variables and Functions</h3><p>Explains how to declare variables and functions in OCaml. Introduces the concept of immutability in OCaml variables.</p>
+<p>Anonymous Functions is an important concept introduced in this chapter.it starts with The <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Lambda_calculus" title="Lambda calculus">lambda calculus</a>, developed in the 1930s by <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Alonzo_Church">Alonzo Church</a>,it is defined like this in ocaml</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># (<span class="keyword">fun</span> x -&gt; x + <span class="number">1</span>);;</span><br><span class="line">- : <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>It can be used just as a normal function,you can apply it with value or pass it to other functions.</p>
+<p>Also,the chapter introduces currying and uncurrying.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> abs_diff x y = abs (x - y);;</span><br><span class="line"><span class="comment">(*Is equalivent to*)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> abs_diff =</span><br><span class="line">(<span class="keyword">fun</span> x -&gt; (<span class="keyword">fun</span> y -&gt; abs (x - y)));; </span><br><span class="line"><span class="comment">(*actually only one argument with param list*)</span></span><br></pre></td></tr></table></figure>
+
+<p>The key to interpreting the type signature of a curried function is the<br>observation that -&gt; is right-associative</p>
+<p>so</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span></span><br><span class="line">after curried can be</span><br><span class="line">(<span class="built_in">int</span> -&gt; <span class="built_in">int</span>) -&gt; <span class="built_in">int</span></span><br></pre></td></tr></table></figure>
+
+<p>Also,ocaml introduces labeled arguments and optional arguments</p>
+<p>label funtions can be passed with labels without caring of the order of the arguments,It does matter in a higher-order context,<br>e.g., when passing a function with labeled arguments to another function</p>
+<p>optional arguments can be marked by using <code>?</code> in front of the name of the arguments,also you can provide a defualt value for optional arguments e.g <code>?(s=&quot;&quot;)</code></p>
+<h3 id="Chapter-3-Lists-and-Patterns"><a href="#Chapter-3-Lists-and-Patterns" class="headerlink" title="Chapter 3: Lists and Patterns"></a>Chapter 3: Lists and Patterns</h3><p>An OCaml list is an immutable, finite sequence of elements of the same type,and it can be expressed using a bracket-and-semicolon notation.</p>
+<p>Also we can use <code>::</code> notation,which has the same meaning but more oftenly used in pattern matching.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># [<span class="number">1</span>;<span class="number">2</span>;<span class="number">3</span>];;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>]</span><br><span class="line"># <span class="number">1</span> :: (<span class="number">2</span> :: (<span class="number">3</span> :: <span class="literal">[]</span>));;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>]</span><br><span class="line"># <span class="number">1</span> :: <span class="number">2</span> :: <span class="number">3</span> :: <span class="literal">[]</span>;;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>In ocaml,the empty list <code>[]</code> is used to terminate a list,and <code>[]</code> can be a list of any type and can be combined with a list of any type.</p>
+<p>we can extract data out of list using pattern matching in match guards in ocaml,such as</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">rec</span> sum l =</span><br><span class="line"><span class="keyword">match</span> l <span class="keyword">with</span></span><br><span class="line">| <span class="literal">[]</span> -&gt; <span class="number">0</span></span><br><span class="line">| hd :: tl -&gt; hd + sum tl;;</span><br></pre></td></tr></table></figure>
+
+<p>pattern matching is very efficent,but we need to consider the shaowding binding problem and exsaustive binding problem,we need to cover all the possible case in pattern matching.</p>
+<p>There are some useful functions to play with lists in the standard library <code>Base</code></p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># <span class="type">List</span>.reduce ~f:(+) [<span class="number">1</span>;<span class="number">2</span>;<span class="number">3</span>;<span class="number">4</span>;<span class="number">5</span>];;</span><br><span class="line">- : <span class="built_in">int</span> option = <span class="type">Some</span> <span class="number">15</span></span><br><span class="line"># <span class="type">List</span>.filter ~f:(<span class="keyword">fun</span> x -&gt; x % <span class="number">2</span> = <span class="number">0</span>) [<span class="number">1</span>;<span class="number">2</span>;<span class="number">3</span>;<span class="number">4</span>;<span class="number">5</span>];;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">2</span>; <span class="number">4</span>]</span><br><span class="line">filter_map : (<span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;b</span> option) -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;b</span> <span class="built_in">list</span></span><br><span class="line"># <span class="type">List</span>.append [<span class="number">1</span>;<span class="number">2</span>;<span class="number">3</span>] [<span class="number">4</span>;<span class="number">5</span>;<span class="number">6</span>];;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>; <span class="number">4</span>; <span class="number">5</span>; <span class="number">6</span>]</span><br><span class="line"><span class="comment">(*You can also use @ like [1;2;3] @ [4;5;6];;*)</span></span><br><span class="line"># <span class="type">List</span>.concat [[<span class="number">1</span>;<span class="number">2</span>];[<span class="number">3</span>;<span class="number">4</span>;<span class="number">5</span>];[<span class="number">6</span>];<span class="literal">[]</span>];;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>; <span class="number">4</span>; <span class="number">5</span>; <span class="number">6</span>]</span><br><span class="line"><span class="comment">(*You can use list.concat to link list of lists*)</span></span><br></pre></td></tr></table></figure>
+
+<p>This chapter also mentions tail recursion optmization,which is also an important technique in practice.</p>
+<p>Considering this function</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> <span class="keyword">rec</span> length = <span class="keyword">function</span></span><br><span class="line">| <span class="literal">[]</span> -&gt; <span class="number">0</span></span><br><span class="line">| _ :: tl -&gt; <span class="number">1</span> + length tl;;</span><br></pre></td></tr></table></figure>
+
+<p>it’s great,but when the lists are too long (more than 100000 elements),it produces a stackoverflow exception,why?</p>
+<p>To understand where the error in the above example comes from, you need to learn a<br>bit more about how function calls work. Typically, a function call needs some space to<br>keep track of information associated with the call, such as the arguments passed to the<br>function, or the location of the code that needs to start executing when the function call<br>is complete. To allow for nested function calls, this information is typically organized<br>in a stack, where a new<br> stack frame is allocated for each nested function call, and then<br>deallocated when the function call is complete.</p>
+<p>So how can we solve this problem with only a few stack frame used?The answer is having a variable or a ref when doing recusion.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> <span class="keyword">rec</span> length_plus_n l n =</span><br><span class="line"><span class="keyword">match</span> l <span class="keyword">with</span></span><br><span class="line">| <span class="literal">[]</span> -&gt; n</span><br><span class="line">| _ :: tl -&gt; length_plus_n tl (n + <span class="number">1</span>);;</span><br><span class="line"># <span class="keyword">let</span> length l = length_plus_n l <span class="number">0</span>;;</span><br><span class="line"># length (make_list <span class="number">10_000_000</span>);;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">10000000</span></span><br></pre></td></tr></table></figure>
+
+<p>Also,there’s a common case for match xxx with … in ocaml,so there’s a sugar <code>function</code> for it.</p>
+<p><code>function</code> also defines a function but <strong>it only takes one param</strong> and it is nameless.</p>
+<p>so we can write the original <code>length</code> function like this</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> <span class="keyword">rec</span> length = <span class="keyword">function</span></span><br><span class="line">| <span class="literal">[]</span> -&gt; <span class="number">0</span></span><br><span class="line">| _ :: tl -&gt; <span class="number">1</span> + length tl;;</span><br><span class="line"><span class="keyword">val</span> length : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The optmization for recursive function and pattern matching are important,we should</p>
+<ul>
+<li><p>Avoid using too much stack frame</p>
+</li>
+<li><p>Remove duplicate pattern which can cause reallocation</p>
+</li>
+<li><p>Make a good use of grammaratical sugar</p>
+</li>
+</ul>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>The previous three chapters give us a brief overall introduction to the ocaml and functional programming.</p>
+<p>Also it introduces the detail of the basic ocaml grammar and commonly used data structures.</p>
+
+      </div>
+    </div>
+</div>
+
+<div class="post-category">
+
+    <div id="p-meta-i">
+        
+          
+              
+                <a class="hover-with-bg" href="/blog/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/"># 计算机</a>
+              
+                <a class="hover-with-bg" href="/blog/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"># 函数式编程</a>
+              
+          
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+
+  <div class="post-copyright">
+    <p style="margin: 5px 0;">文章作者：<a href="/">Synth Magic</a></p>
+    <p style="margin: 5px 0;">文章链接：<a href="https://www.synthesizer.moe/blog/2024/11/08/book-reading-notes-20241108/">https://www.synthesizer.moe/blog/2024/11/08/book-reading-notes-20241108/</a></p>
+    <p style="margin: 5px 0;">版权声明：本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处，谢谢。</p>
+  </div>
+  
+</div>
+
+</article>
+
+
+        </div>
+        
+<footer class="text-center">
+    
+    
+    
+    
+    
+    <p>&copy;  2024 - 2024&nbsp;&nbsp;Synth Magic</p>
+    
+    <p>Powered by <a href="https://www.synthesizer.moe/" target="_blank">Synth Magic</a> </p>
+    
+    
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+    
+    
+      <a class="toc-btn" id="share-btn"><i>
+        <svg t="1670124379155" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2683" width="25" height="25"><path d="M395.946667 234.666667v64H256v469.333333h512V522.666667h64V768a64 64 0 0 1-64 64H256a64 64 0 0 1-64-64V298.666667a64 64 0 0 1 64-64h139.946667z m335.850666-87.914667l150.848 150.826667-158.378666 158.4-45.269334-45.248L748.394667 341.333333H672c-121.685333 0-220.714667 97.024-223.914667 217.941334L448 565.333333v85.333334h-64v-85.333334C384 406.272 512.938667 277.333333 672 277.333333h99.861333l-85.312-85.333333 45.248-45.248z" p-id="2684" fill="var(--first-text-color)"></path></svg>
+      </i></a>
+    
+    <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+      <i id="i-up"></i>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+    <script>
+        query("#share-btn")[0].onclick = async () => {
+            let url = `${location.protocol}//${location.hostname}${location.port ? ":"+location.port:location.port}${location.pathname}#read=${sessionStorage.getItem(location.pathname+"_read_y") || ""}`;
+            try {
+                await navigator.clipboard.writeText(url);
+                prompt_core("分享链接已经复制至剪贴板", 4800, true);
+            } catch(e) {
+                prompt_core("分享链接复制失败，请手动复制<br/>"+url, 4800, false);
+            }
+        }
+    </script>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+    <script>
+        const getScrollPosition = (el = window) => ({
+            x: el.pageXOffset !== undefined ? el.pageXOffset : el.scrollLeft,
+            y: el.pageYOffset !== undefined ? el.pageYOffset : el.scrollTop
+        });
+        // 此处的 750 是「页面元素的最大宽度」
+        var wx = document.getElementsByClassName("article-m")[0].clientWidth;
+        var wy = document.getElementsByClassName("article-m")[0].clientHeight;
+        function windowScroll() {
+            // 反复修改 确保页面尺寸不改变
+            wx = document.getElementsByClassName("article-m")[0].clientWidth;
+            wy = document.getElementsByClassName("article-m")[0].clientHeight;
+            let y = Math.round(getScrollPosition().y);
+            // console.log(y);
+            // 组合字符串，同时记录页面坐标，页面宽度和高度
+            let p = `${y}:${wx}:${wy}`;
+            // 写入到 sessionStorage 中
+            sessionStorage.setItem(location.pathname + "_read_y", p);
+        }
+        // URL 中是否包含传递的坐标信息
+        setTimeout(() => {
+            if (location.hash.split("#read=").length > 1) {
+                prompt_core("已有阅读进度，正在跳转", 4800, true);
+                // 分离字符串
+                let read_y = location.hash.split("#read=")[1];
+                read_y = read_y.split(":");
+                // 组合乘积，顺滑移动至坐标
+                window.scrollTo({top: Math.round(Number(read_y[0]) * Number(read_y[1] * Number(read_y[2] / wx / wy))), behavior: "smooth"});
+            } else {
+                // 从 sessionStorage 中获取
+                let read_y = sessionStorage.getItem(location.pathname + "_read_y") || "0:0:0";
+                read_y = read_y.split(":");
+                if (read_y[0] != "0") prompt_core("已有阅读进度，正在跳转", 4800, true);
+                window.scrollTo({top: Math.round(Number(read_y[0]) * Number(read_y[1] * Number(read_y[2] / wx / wy))), behavior: "smooth"});
+            }
+        }, 500);
+        window.onscroll = windowScroll;
+    </script>
+
+
+
+
+
+        </div>
+        <div id="css-loading">
+            <h3 class="text-center">加载中...</h3>
+        </div>
+        
+    </body>
+</html>
