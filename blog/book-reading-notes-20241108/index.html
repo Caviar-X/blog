@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Synth Magic">
+    <script> MathJax = { tex: { inlineMath: [['$', '$']] }, svg: { fontCache: 'global' } }; </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"> </script>
+
+    
+    <title>
+        
+            Real World Ocaml (第2版) 读书笔记 (1-3章) |
+        
+        Synth Magic&#39;s blog
+    </title>
+    
+<link rel="stylesheet" href="/blog/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/blog/images/favicon.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"synthesizer.moe","root":"/blog/","language":"en"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#339999","title":"Synth Magic's blog","author":"Synth Magic","avatar":"/images/favicon.png","logo":"/images/favicon.png","favicon":"/images/favicon.png"},"menu":{"home":"/","archives":"/archives","mainpage":"https://synthesizer.moe"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg2.svg","description":"Grand Espoir","hitokoto":false},"social_contact":{"enable":false,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":false,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":false,"level_badge":false,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":false,"reward":{"enable":false,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"local_search":{"enable":true,"preload":true},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2024,"word_count":true,"site_deploy":{"enable":false,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"/blog","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/blog/">
+                    <img src="/blog/images/favicon.png">
+                </a>
+            
+            <a class="site-name border-box" href="/blog/">
+               Synth Magic&#39;s blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/blog/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/blog/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="https://synthesizer.moe">
+                                
+                                MAINPAGE
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/blog/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/blog/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="https://synthesizer.moe">
+                            
+                            MAINPAGE
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        Real World Ocaml (第2版) 读书笔记 (1-3章)
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/blog/images/favicon.png">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">Synth Magic</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2024-11-08 18:29:20</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Thu Dec 26 2024 15:48:44 GMT+0800">2024-12-26 15:48:44</span>
+                </span>
+            
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/blog/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/blog/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h1 id="Book-Reading-Report-Real-World-OCaml-2nd-Edition-Chapter-1-3"><a href="#Book-Reading-Report-Real-World-OCaml-2nd-Edition-Chapter-1-3" class="headerlink" title="Book Reading Report: Real World OCaml (2nd Edition) (Chapter 1-3)"></a>Book Reading Report: <em>Real World OCaml</em> (2nd Edition) (Chapter 1-3)</h1><h2 id="Summary-of-Key-Chapters"><a href="#Summary-of-Key-Chapters" class="headerlink" title="Summary of Key Chapters"></a>Summary of Key Chapters</h2><h3 id="Chapter-1-A-Guided-Tour"><a href="#Chapter-1-A-Guided-Tour" class="headerlink" title="Chapter 1: A Guided Tour"></a>Chapter 1: A Guided Tour</h3><blockquote>
+<p>REPL stands for Read, Evaluate, Print, and Loop,it is usually a environment where you can type in your code and get quick result</p>
+</blockquote>
+<p>All the operation now are done in <code>utop</code> (fancier REPL of ocaml) or the REPL of <code>ocaml</code></p>
+<p>This chapter covers the basics of OCaml, such as the most basic operator</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">3</span> + <span class="number">4</span>;;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">7</span></span><br><span class="line"># <span class="number">8</span> / <span class="number">3</span>;;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">2</span></span><br><span class="line"># <span class="number">3.5</span> +. <span class="number">6.</span>;;</span><br><span class="line">- : <span class="built_in">float</span> = <span class="number">9.5</span></span><br><span class="line"># <span class="number">30_000_000</span> / <span class="number">300_000</span>;;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">100</span></span><br><span class="line"># <span class="number">3</span> * <span class="number">5</span> &gt; <span class="number">14</span>;;</span><br><span class="line">- : <span class="built_in">bool</span> = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>Also introduces the most basic let-binding technique,which is essential for value-binding and function definition.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> x = <span class="number">3</span> + <span class="number">4</span>;; <span class="comment">(*Value Binding*)</span></span><br><span class="line"><span class="keyword">val</span> x : <span class="built_in">int</span> = <span class="number">7</span></span><br><span class="line"># <span class="keyword">let</span> y = x + x;;</span><br><span class="line"><span class="keyword">val</span> y : <span class="built_in">int</span> = <span class="number">14</span></span><br><span class="line"># <span class="keyword">let</span> square x = x * x;; <span class="comment">(*Function Definition*)</span></span><br><span class="line"><span class="keyword">val</span> square : <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br><span class="line"># square <span class="number">2</span>;;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">4</span></span><br><span class="line"># square (square <span class="number">2</span>);;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">16</span></span><br></pre></td></tr></table></figure>
+
+<p>Also it introduces the if statement.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> sum_if_true test first second =</span><br><span class="line">(<span class="keyword">if</span> test first <span class="keyword">then</span> first <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">+ (<span class="keyword">if</span> test second <span class="keyword">then</span> second <span class="keyword">else</span> <span class="number">0</span>);;</span><br><span class="line"><span class="keyword">val</span> sum_if_true : (<span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>Warning</strong>: <code>==</code> in ocaml means that two things are <strong>Physical equal</strong>,if you want to use structural equal or inequal please use <code>=</code> for equal and <code>&lt;&gt;</code> for inequal</p>
+</blockquote>
+<p>Type inference and generic types are also important in Ocaml because this impoves the experience and overall type system.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(*This is a function with full type notation*)</span></span><br><span class="line"><span class="comment">(*But we can skip it because of type inference*)</span></span><br><span class="line"># <span class="keyword">let</span> sum_if_true (test : <span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) (x : <span class="built_in">int</span>) (y : <span class="built_in">int</span>) : <span class="built_in">int</span> =</span><br><span class="line">(<span class="keyword">if</span> test x <span class="keyword">then</span> x <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">+ (<span class="keyword">if</span> test y <span class="keyword">then</span> y <span class="keyword">else</span> <span class="number">0</span>);;</span><br><span class="line"><span class="keyword">val</span> sum_if_true : (<span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br><span class="line"></span><br><span class="line"># <span class="keyword">let</span> sum_if_true (test : <span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) (x : <span class="built_in">int</span>) (y : <span class="built_in">int</span>) : <span class="built_in">int</span> =</span><br><span class="line">(<span class="keyword">if</span> test x <span class="keyword">then</span> x <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">+ (<span class="keyword">if</span> test y <span class="keyword">then</span> y <span class="keyword">else</span> <span class="number">0</span>);;</span><br><span class="line"><span class="keyword">val</span> sum_if_true : (<span class="built_in">int</span> -&gt; <span class="built_in">bool</span>) -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Then it introduces some useful data structure that are essential in development such as</p>
+<ul>
+<li><p>Tuples</p>
+</li>
+<li><p>Lists</p>
+</li>
+<li><p>Options</p>
+</li>
+<li><p>Record</p>
+</li>
+<li><p>Variants</p>
+</li>
+<li><p>Arrays</p>
+</li>
+<li><p>Mutable Record Fields</p>
+</li>
+<li><p>Refs</p>
+</li>
+</ul>
+<p>For basic loops conditioning ocaml supports <code>for</code> and <code>while</code></p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(*While loop*)</span></span><br><span class="line"># <span class="keyword">let</span> find_first_negative_entry <span class="built_in">array</span> =</span><br><span class="line"><span class="keyword">let</span> pos = <span class="built_in">ref</span> <span class="number">0</span> <span class="keyword">in</span></span><br><span class="line"><span class="keyword">while</span> !pos &lt; <span class="type">Array</span>.length <span class="built_in">array</span> &amp;&amp; <span class="built_in">array</span>.(!pos) &gt;= <span class="number">0</span> <span class="keyword">do</span></span><br><span class="line">pos := !pos + <span class="number">1</span></span><br><span class="line"><span class="keyword">done</span>;</span><br><span class="line"><span class="keyword">if</span> !pos = <span class="type">Array</span>.length <span class="built_in">array</span> <span class="keyword">then</span> <span class="type">None</span> <span class="keyword">else</span> <span class="type">Some</span> !pos;;</span><br><span class="line"><span class="keyword">val</span> find_first_negative_entry : <span class="built_in">int</span> <span class="built_in">array</span> -&gt; <span class="built_in">int</span> option = &lt;<span class="keyword">fun</span>&gt;</span><br><span class="line"># find_first_negative_entry [|<span class="number">1</span>;<span class="number">2</span>;<span class="number">0</span>;<span class="number">3</span>|];;</span><br><span class="line">- : <span class="built_in">int</span> option = <span class="type">None</span></span><br><span class="line"># find_first_negative_entry [|<span class="number">1</span>;-<span class="number">2</span>;<span class="number">0</span>;<span class="number">3</span>|];;</span><br><span class="line">- : <span class="built_in">int</span> option = <span class="type">Some</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">(*For loops*)</span></span><br><span class="line"># <span class="keyword">let</span> permute <span class="built_in">array</span> =</span><br><span class="line"><span class="keyword">let</span> length = <span class="type">Array</span>.length <span class="built_in">array</span> <span class="keyword">in</span></span><br><span class="line"><span class="keyword">for</span> i = <span class="number">0</span> <span class="keyword">to</span> length - <span class="number">2</span> <span class="keyword">do</span></span><br><span class="line"><span class="comment">(* pick a j to swap with *)</span></span><br><span class="line"><span class="keyword">let</span> j = i + <span class="type">Random</span>.<span class="built_in">int</span> (length - i) <span class="keyword">in</span></span><br><span class="line"><span class="comment">(* Swap i and j *)</span></span><br><span class="line"><span class="keyword">let</span> tmp = <span class="built_in">array</span>.(i) <span class="keyword">in</span></span><br><span class="line"><span class="built_in">array</span>.(i) &lt;- <span class="built_in">array</span>.(j);</span><br><span class="line"><span class="built_in">array</span>.(j) &lt;- tmp</span><br><span class="line"><span class="keyword">done</span>;;</span><br><span class="line"><span class="keyword">val</span> permute : <span class="symbol">&#x27;a</span> <span class="built_in">array</span> -&gt; <span class="built_in">unit</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Chapter-2-Variables-and-Functions"><a href="#Chapter-2-Variables-and-Functions" class="headerlink" title="Chapter 2: Variables and Functions"></a>Chapter 2: Variables and Functions</h3><p>Explains how to declare variables and functions in OCaml. Introduces the concept of immutability in OCaml variables.</p>
+<p>Anonymous Functions is an important concept introduced in this chapter.it starts with The <a class="link"   target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Lambda_calculus"  title="Lambda calculus">lambda calculus<i class="fas fa-external-link-alt"></i></a>, developed in the 1930s by <a class="link"   target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Alonzo_Church" >Alonzo Church<i class="fas fa-external-link-alt"></i></a>,it is defined like this in ocaml</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># (<span class="keyword">fun</span> x -&gt; x + <span class="number">1</span>);;</span><br><span class="line">- : <span class="built_in">int</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>It can be used just as a normal function,you can apply it with value or pass it to other functions.</p>
+<p>Also,the chapter introduces currying and uncurrying.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> abs_diff x y = abs (x - y);;</span><br><span class="line"><span class="comment">(*Is equalivent to*)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> abs_diff =</span><br><span class="line">(<span class="keyword">fun</span> x -&gt; (<span class="keyword">fun</span> y -&gt; abs (x - y)));; </span><br><span class="line"><span class="comment">(*actually only one argument with param list*)</span></span><br></pre></td></tr></table></figure>
+
+<p>The key to interpreting the type signature of a curried function is the<br>observation that -&gt; is right-associative</p>
+<p>so</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> -&gt; <span class="built_in">int</span> -&gt; <span class="built_in">int</span></span><br><span class="line">after curried can be</span><br><span class="line">(<span class="built_in">int</span> -&gt; <span class="built_in">int</span>) -&gt; <span class="built_in">int</span></span><br></pre></td></tr></table></figure>
+
+<p>Also,ocaml introduces labeled arguments and optional arguments</p>
+<p>label funtions can be passed with labels without caring of the order of the arguments,It does matter in a higher-order context,<br>e.g., when passing a function with labeled arguments to another function</p>
+<p>optional arguments can be marked by using <code>?</code> in front of the name of the arguments,also you can provide a defualt value for optional arguments e.g <code>?(s=&quot;&quot;)</code></p>
+<h3 id="Chapter-3-Lists-and-Patterns"><a href="#Chapter-3-Lists-and-Patterns" class="headerlink" title="Chapter 3: Lists and Patterns"></a>Chapter 3: Lists and Patterns</h3><p>An OCaml list is an immutable, finite sequence of elements of the same type,and it can be expressed using a bracket-and-semicolon notation.</p>
+<p>Also we can use <code>::</code> notation,which has the same meaning but more oftenly used in pattern matching.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># [<span class="number">1</span>;<span class="number">2</span>;<span class="number">3</span>];;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>]</span><br><span class="line"># <span class="number">1</span> :: (<span class="number">2</span> :: (<span class="number">3</span> :: <span class="literal">[]</span>));;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>]</span><br><span class="line"># <span class="number">1</span> :: <span class="number">2</span> :: <span class="number">3</span> :: <span class="literal">[]</span>;;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>In ocaml,the empty list <code>[]</code> is used to terminate a list,and <code>[]</code> can be a list of any type and can be combined with a list of any type.</p>
+<p>we can extract data out of list using pattern matching in match guards in ocaml,such as</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">rec</span> sum l =</span><br><span class="line"><span class="keyword">match</span> l <span class="keyword">with</span></span><br><span class="line">| <span class="literal">[]</span> -&gt; <span class="number">0</span></span><br><span class="line">| hd :: tl -&gt; hd + sum tl;;</span><br></pre></td></tr></table></figure>
+
+<p>pattern matching is very efficent,but we need to consider the shaowding binding problem and exsaustive binding problem,we need to cover all the possible case in pattern matching.</p>
+<p>There are some useful functions to play with lists in the standard library <code>Base</code></p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># <span class="type">List</span>.reduce ~f:(+) [<span class="number">1</span>;<span class="number">2</span>;<span class="number">3</span>;<span class="number">4</span>;<span class="number">5</span>];;</span><br><span class="line">- : <span class="built_in">int</span> option = <span class="type">Some</span> <span class="number">15</span></span><br><span class="line"># <span class="type">List</span>.filter ~f:(<span class="keyword">fun</span> x -&gt; x % <span class="number">2</span> = <span class="number">0</span>) [<span class="number">1</span>;<span class="number">2</span>;<span class="number">3</span>;<span class="number">4</span>;<span class="number">5</span>];;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">2</span>; <span class="number">4</span>]</span><br><span class="line">filter_map : (<span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;b</span> option) -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;b</span> <span class="built_in">list</span></span><br><span class="line"># <span class="type">List</span>.append [<span class="number">1</span>;<span class="number">2</span>;<span class="number">3</span>] [<span class="number">4</span>;<span class="number">5</span>;<span class="number">6</span>];;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>; <span class="number">4</span>; <span class="number">5</span>; <span class="number">6</span>]</span><br><span class="line"><span class="comment">(*You can also use @ like [1;2;3] @ [4;5;6];;*)</span></span><br><span class="line"># <span class="type">List</span>.concat [[<span class="number">1</span>;<span class="number">2</span>];[<span class="number">3</span>;<span class="number">4</span>;<span class="number">5</span>];[<span class="number">6</span>];<span class="literal">[]</span>];;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">3</span>; <span class="number">4</span>; <span class="number">5</span>; <span class="number">6</span>]</span><br><span class="line"><span class="comment">(*You can use list.concat to link list of lists*)</span></span><br></pre></td></tr></table></figure>
+
+<p>This chapter also mentions tail recursion optmization,which is also an important technique in practice.</p>
+<p>Considering this function</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> <span class="keyword">rec</span> length = <span class="keyword">function</span></span><br><span class="line">| <span class="literal">[]</span> -&gt; <span class="number">0</span></span><br><span class="line">| _ :: tl -&gt; <span class="number">1</span> + length tl;;</span><br></pre></td></tr></table></figure>
+
+<p>it’s great,but when the lists are too long (more than 100000 elements),it produces a stackoverflow exception,why?</p>
+<p>To understand where the error in the above example comes from, you need to learn a<br>bit more about how function calls work. Typically, a function call needs some space to<br>keep track of information associated with the call, such as the arguments passed to the<br>function, or the location of the code that needs to start executing when the function call<br>is complete. To allow for nested function calls, this information is typically organized<br>in a stack, where a new<br> stack frame is allocated for each nested function call, and then<br>deallocated when the function call is complete.</p>
+<p>So how can we solve this problem with only a few stack frame used?The answer is having a variable or a ref when doing recusion.</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> <span class="keyword">rec</span> length_plus_n l n =</span><br><span class="line"><span class="keyword">match</span> l <span class="keyword">with</span></span><br><span class="line">| <span class="literal">[]</span> -&gt; n</span><br><span class="line">| _ :: tl -&gt; length_plus_n tl (n + <span class="number">1</span>);;</span><br><span class="line"># <span class="keyword">let</span> length l = length_plus_n l <span class="number">0</span>;;</span><br><span class="line"># length (make_list <span class="number">10_000_000</span>);;</span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">10000000</span></span><br></pre></td></tr></table></figure>
+
+<p>Also,there’s a common case for match xxx with … in ocaml,so there’s a sugar <code>function</code> for it.</p>
+<p><code>function</code> also defines a function but <strong>it only takes one param</strong> and it is nameless.</p>
+<p>so we can write the original <code>length</code> function like this</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">let</span> <span class="keyword">rec</span> length = <span class="keyword">function</span></span><br><span class="line">| <span class="literal">[]</span> -&gt; <span class="number">0</span></span><br><span class="line">| _ :: tl -&gt; <span class="number">1</span> + length tl;;</span><br><span class="line"><span class="keyword">val</span> length : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="built_in">int</span> = &lt;<span class="keyword">fun</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The optmization for recursive function and pattern matching are important,we should</p>
+<ul>
+<li><p>Avoid using too much stack frame</p>
+</li>
+<li><p>Remove duplicate pattern which can cause reallocation</p>
+</li>
+<li><p>Make a good use of grammaratical sugar</p>
+</li>
+</ul>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>The previous three chapters give us a brief overall introduction to the ocaml and functional programming.</p>
+<p>Also it introduces the detail of the basic ocaml grammar and commonly used data structures.</p>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                Real World Ocaml (第2版) 读书笔记 (1-3章)
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                book-reading-notes-20241108/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">Synth Magic</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2024-11-08 18:29</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/blog/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/blog/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/blog/asdan-essay/"
+                                   title="My essay (论文)"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">My essay (论文)</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/blog/coursera-alogorithms-part1-lecture3/"
+                                   title="Coursera ALogorithms Part 1 Lecture 3 笔记"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Coursera ALogorithms Part 1 Lecture 3 笔记</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Book-Reading-Report-Real-World-OCaml-2nd-Edition-Chapter-1-3"><span class="nav-text">Book Reading Report: Real World OCaml (2nd Edition) (Chapter 1-3)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary-of-Key-Chapters"><span class="nav-text">Summary of Key Chapters</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-1-A-Guided-Tour"><span class="nav-text">Chapter 1: A Guided Tour</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-2-Variables-and-Functions"><span class="nav-text">Chapter 2: Variables and Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-3-Lists-and-Patterns"><span class="nav-text">Chapter 3: Lists and Patterns</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2024</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/blog/">Synth Magic</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Book-Reading-Report-Real-World-OCaml-2nd-Edition-Chapter-1-3"><span class="nav-text">Book Reading Report: Real World OCaml (2nd Edition) (Chapter 1-3)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary-of-Key-Chapters"><span class="nav-text">Summary of Key Chapters</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-1-A-Guided-Tour"><span class="nav-text">Chapter 1: A Guided Tour</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-2-Variables-and-Functions"><span class="nav-text">Chapter 2: Variables and Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-3-Lists-and-Patterns"><span class="nav-text">Chapter 3: Lists and Patterns</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/copyright-info.min.js"></script>
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
