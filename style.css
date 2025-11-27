@@ -212,22 +212,26 @@ ul li {
 
 p {
   margin: 0.75rem 0;
+
   padding: 0;
 }
-
-pre {
+article p {
+    line-height: 200%;
+    white-space: pre-line;
+}
+/* pre {
   margin: 1rem 0;
   max-width: var(--width-card-wide);
   padding: 1rem 0;
-}
+} */
 
-pre code,
+/* pre code,
 pre samp {
   display: block;
   max-width: var(--width-card-wide);
   padding: 0.5rem 2rem;
   white-space: pre-wrap;
-}
+} */
 
 small {
   color: var(--color-text-secondary);
